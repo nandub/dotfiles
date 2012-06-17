@@ -12,7 +12,7 @@ task :install do
     overwrite = false
     backup = false
 
-    file = File.basename(linkable).split('.').first
+    file = File.basename(linkable).split('.')[0...-1].join('.')
     target = "#{ENV["HOME"]}/.#{file}"
 
     if File.exists?(target) || File.symlink?(target)
@@ -34,7 +34,7 @@ task :install do
 end
 task :uninstall do
   Dir.glob('**/*.symlink').each do |linkable|
-    file = linkable.split('/').last.split('.symlink').last
+    file = linkable.split('/').last.split('.symlink').join('.')
     target = "#{ENV["HOME"]}/.#{file}"
     # Remove all symlinks created during installation
     if File.symlink?(target)
